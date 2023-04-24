@@ -45,12 +45,6 @@ func main() {
 	os.Exit(1)
 }
 
-type customLogger struct{}
-
-func (_ customLogger) Print(v ...interface{}) {
-	fmt.Println(v...)
-}
-
 func execute(cfg *Config) bool {
 
 	logger := log.NewFileLogger(customLogger{})

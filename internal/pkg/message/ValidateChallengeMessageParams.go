@@ -40,9 +40,9 @@ func ValidateChallengeMessageParams(params [][]string) (diceCount int, skill int
 	}
 
 	diceCount, _ = strconv.Atoi(dice)
-	skillNumberVal, _ := strconv.Atoi(skillNumber)
+	skill, _ = strconv.Atoi(skillNumber)
 	if skillSign == "-" {
-		skillNumberVal = 0 - skillNumberVal
+		skill = 0 - skill
 	}
 
 	if diceCount < 1 {

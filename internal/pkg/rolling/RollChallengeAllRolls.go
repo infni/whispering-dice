@@ -2,6 +2,7 @@ package rolling
 
 func RollChallengeAllRolls(diceCount int) (rolls []int, maxRoll int, selectedSide int) {
 
+	rolls = make([]int, diceCount)
 	for i := 0; i < len(rolls); i++ {
 		rolls[i] = random.Intn(6) + 1
 	}

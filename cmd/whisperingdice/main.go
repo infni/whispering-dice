@@ -16,7 +16,7 @@ var version = "defined at build time"
 
 const (
 	defaultDiscordToken string = "collectatruntime"
-	defaultAppId        string = "defaultAppId"
+	defaultAppId        string = ""
 	defaultGuidId       string = ""
 )
 

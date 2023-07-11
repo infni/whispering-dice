@@ -16,6 +16,8 @@ var version = "defined at build time"
 
 const (
 	defaultDiscordToken string = "collectatruntime"
+	defaultAppId        string = "defaultAppId"
+	defaultGuidId       string = "defaultGuildId"
 )
 
 func main() {
@@ -24,11 +26,19 @@ func main() {
 	cfg := &Config{}
 	flag.BoolVar(&cfg.DisplayVesion, "version", false, "display the version and exit")
 	flag.StringVar(&cfg.DiscordToken, "token", defaultDiscordToken, "the discord tolken for this API account")
+	flag.StringVar(&cfg.AppId, "appid", defaultAppId, "the application ID for this API account")
+	flag.StringVar(&cfg.GuildId, "guildid", defaultGuidId, "the application ID for this API account")
 
 	flag.Parse()
 
 	if discordToken := os.Getenv("TOKEN"); len(discordToken) > 0 && cfg.DiscordToken == defaultDiscordToken {
 		cfg.DiscordToken = discordToken
+	}
+	if appId := os.Getenv("APPID"); len(appId) > 0 && cfg.AppId == defaultAppId {
+		cfg.AppId = appId
+	}
+	if guildId := os.Getenv("GUILDID"); len(guildId) > 0 && cfg.GuildId == defaultGuidId {
+		cfg.GuildId = guildId
 	}
 
 	if cfg.DisplayVesion {
@@ -55,11 +65,28 @@ func execute(cfg *Config) bool {
 		return false
 	}
 
-	// Register the messageCreate func as a callback for MessageCreate events.
-	dg.AddHandler(message.CreateResponseFunc(logger))
+	commands := message.CreateCommands(logger)
 
-	// In this example, we only care about receiving message events.
-	dg.Identify.Intents = discordgo.IntentGuildMessages
+	commandArray := make([]*discordgo.ApplicationCommand, len(commands))
+	commandHandlers := make(map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate), len(commands))
+	i := 0
+	for k, v := range commands {
+		commandArray[i] = k
+		commandHandlers[k.Name] = v
+		i++
+	}
+
+	_, err = dg.ApplicationCommandBulkOverwrite(cfg.AppId, cfg.GuildId, commandArray)
+	if err != nil {
+		fmt.Println("error bulk registering command,", err)
+		return false
+	}
+
+	dg.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+		if h, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {
+			h(s, i)
+		}
+	})
 
 	// Open a websocket connection to Discord and begin listening.
 	err = dg.Open()

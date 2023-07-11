@@ -31,5 +31,7 @@ COPY --from=GOBASE /pub .
 
 ARG BOT_TOKEN
 ENV TOKEN=${BOT_TOKEN}
+ENV APPID=${APP_ID}
+ENV GUILDID=${GUILD_ID}
 
 CMD ["/pub/whisperingdice"]

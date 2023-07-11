@@ -64,6 +64,14 @@ func execute(cfg *Config) bool {
 		fmt.Println("error creating Discord session,", err)
 		return false
 	}
+	// Open a websocket connection to Discord and begin listening.
+	err = dg.Open()
+	if err != nil {
+		fmt.Println("error opening connection,", err)
+		return false
+	}
+	// Cleanly close down the Discord session.
+	defer dg.Close()
 
 	commands := message.CreateCommands(logger)
 
@@ -82,24 +90,28 @@ func execute(cfg *Config) bool {
 		}
 	})
 
+	// remove exisiting commands
+	if exCmd, exCmdErr := dg.ApplicationCommands(cfg.AppId, cfg.GuildId); exCmdErr != nil {
+		fmt.Println("error collecting commands", exCmdErr)
+		return false
+	} else {
+		for _, cmd := range exCmd {
+			if rcmdErr := dg.ApplicationCommandDelete(cfg.AppId, cfg.GuildId, cmd.ID); rcmdErr != nil {
+				fmt.Printf("\nerror deleting discord command '%s' err: %s,", cmd.Name, rcmdErr.Error())
+				return false
+			}
+		}
+	}
+
+	// register new command
 	registeredCommands := make([]*discordgo.ApplicationCommand, len(commands))
 	for i, v := range commandArray {
 		cmd, err := dg.ApplicationCommandCreate(cfg.AppId, cfg.GuildId, v)
 		if err != nil {
-			fmt.Printf("\nerror creating Discord command '%s' err: %s,", v.Name, err.Error())
-			return false
+			fmt.Printf("\nerror creating discord command '%s' err: %s,", v.Name, err.Error())
 		}
 		registeredCommands[i] = cmd
 	}
-
-	// Open a websocket connection to Discord and begin listening.
-	err = dg.Open()
-	if err != nil {
-		fmt.Println("error opening connection,", err)
-		return false
-	}
-	// Cleanly close down the Discord session.
-	defer dg.Close()
 
 	// Wait here until CTRL-C or other term signal is received.
 	fmt.Println("Bot is now running. Press CTRL-C to exit.")

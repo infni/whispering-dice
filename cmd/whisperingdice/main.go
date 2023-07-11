@@ -76,17 +76,21 @@ func execute(cfg *Config) bool {
 		i++
 	}
 
-	_, err = dg.ApplicationCommandBulkOverwrite(cfg.AppId, cfg.GuildId, commandArray)
-	if err != nil {
-		fmt.Println("error bulk registering command,", err)
-		return false
-	}
-
 	dg.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if h, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {
 			h(s, i)
 		}
 	})
+
+	registeredCommands := make([]*discordgo.ApplicationCommand, len(commands))
+	for i, v := range commandArray {
+		cmd, err := dg.ApplicationCommandCreate(cfg.AppId, cfg.GuildId, v)
+		if err != nil {
+			fmt.Printf("\nerror creating Discord command '%s' err: %s,", v.Name, err.Error())
+			return false
+		}
+		registeredCommands[i] = cmd
+	}
 
 	// Open a websocket connection to Discord and begin listening.
 	err = dg.Open()

@@ -25,7 +25,7 @@ func NewDamageCommand() *discordgo.ApplicationCommand {
 			{
 				Type:        discordgo.ApplicationCommandOptionInteger,
 				Name:        OptionCap,
-				Description: "The maximum number (value) that will be counted when rolling damage (2 <= value <= 6). defaults to 6.",
+				Description: "The maximum number that will be counted when rolling damage (2 <= value <= 6). defaults to 6.",
 				Required:    false,
 				MinValue:    &integerOptionValueTwo,
 				MaxValue:    6,

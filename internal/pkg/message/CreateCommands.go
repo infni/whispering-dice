@@ -32,9 +32,9 @@ func CreateCommands(logger log.Logger) map[*discordgo.ApplicationCommand]func(s 
 			}
 
 			message, addl := fn(optionMap)
-			addl["user"] = i.User.Username
+			addl["user"] = i.Member.User.Username
 
-			content := fmt.Sprintf("<@%s> %s", i.User.ID, message)
+			content := fmt.Sprintf("<@%s> %s", i.Member.User.ID, message)
 
 			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 				// Ignore type for now, they will be discussed in "responses"

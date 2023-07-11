@@ -17,7 +17,7 @@ var version = "defined at build time"
 const (
 	defaultDiscordToken string = "collectatruntime"
 	defaultAppId        string = "defaultAppId"
-	defaultGuidId       string = "defaultGuildId"
+	defaultGuidId       string = ""
 )
 
 func main() {

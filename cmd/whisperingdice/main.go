@@ -64,15 +64,6 @@ func execute(cfg *Config) bool {
 		fmt.Println("error creating Discord session,", err)
 		return false
 	}
-	// Open a websocket connection to Discord and begin listening.
-	err = dg.Open()
-	if err != nil {
-		fmt.Println("error opening connection,", err)
-		return false
-	}
-	// Cleanly close down the Discord session.
-	defer dg.Close()
-
 	commands := message.CreateCommands(logger)
 
 	commandArray := make([]*discordgo.ApplicationCommand, len(commands))
@@ -83,6 +74,15 @@ func execute(cfg *Config) bool {
 		commandHandlers[k.Name] = v
 		i++
 	}
+
+	// Open a websocket connection to Discord and begin listening.
+	err = dg.Open()
+	if err != nil {
+		fmt.Println("error opening connection,", err)
+		return false
+	}
+	// Cleanly close down the Discord session.
+	defer dg.Close()
 
 	dg.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if h, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {

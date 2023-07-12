@@ -43,11 +43,11 @@ func NewDamageCommand() *discordgo.ApplicationCommand {
 
 func NewDamageCommandHandler(optionMap map[string]*discordgo.ApplicationCommandInteractionDataOption) (message string, addl log.AddlInfo) {
 
-	comment := optionMap[OptionComment].StringValue()
-	if len(comment) > 0 {
-		comment = " ## " + comment
-	}
 	pool := int(optionMap[OptionPool].IntValue())
+	comment := ""
+	if s, ok := optionMap[OptionComment]; ok {
+		comment = " ## " + s.StringValue()
+	}
 	cap := 6
 	if val, ok := optionMap[OptionCap]; ok {
 		cap = int(val.IntValue())

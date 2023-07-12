@@ -43,9 +43,9 @@ func NewChallengeCommand() *discordgo.ApplicationCommand {
 
 func NewChallengeCommandHandler(optionMap map[string]*discordgo.ApplicationCommandInteractionDataOption) (message string, addl log.AddlInfo) {
 
-	comment := optionMap[OptionComment].StringValue()
-	if len(comment) > 0 {
-		comment = " ## " + comment
+	comment := ""
+	if s, ok := optionMap[OptionComment]; ok {
+		comment = " ## " + s.StringValue()
 	}
 	pool := int(optionMap[OptionPool].IntValue())
 	skill := 0

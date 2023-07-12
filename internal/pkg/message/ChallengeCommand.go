@@ -30,12 +30,23 @@ func NewChallengeCommand() *discordgo.ApplicationCommand {
 				MinValue:    &integerOptionNegative99,
 				MaxValue:    99,
 			},
+			{
+				Type:        discordgo.ApplicationCommandOptionString,
+				Name:        OptionComment,
+				Description: "A comment.  (<99 characters)",
+				Required:    false,
+				MaxLength:   99,
+			},
 		},
 	}
 }
 
 func NewChallengeCommandHandler(optionMap map[string]*discordgo.ApplicationCommandInteractionDataOption) (message string, addl log.AddlInfo) {
 
+	comment := optionMap[OptionComment].StringValue()
+	if len(comment) > 0 {
+		comment = " ## " + comment
+	}
 	pool := int(optionMap[OptionPool].IntValue())
 	skill := 0
 	if val, ok := optionMap[OptionSkill]; ok {
@@ -63,5 +74,5 @@ func NewChallengeCommandHandler(optionMap map[string]*discordgo.ApplicationComma
 		ResultRolls:        rolls,
 	}
 
-	return fmt.Sprintf("Roll: [%s] Total: _(%d%+d)_= **%d**", strings.Join(formattedRolls, ","), total, skill, (total + skill)), addl
+	return fmt.Sprintf("Roll: [%s] Total: _(%d%+d)_= **%d**%s", strings.Join(formattedRolls, ","), total, skill, (total + skill), comment), addl
 }

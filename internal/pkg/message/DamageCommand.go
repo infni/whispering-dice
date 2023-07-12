@@ -30,12 +30,23 @@ func NewDamageCommand() *discordgo.ApplicationCommand {
 				MinValue:    &integerOptionValueTwo,
 				MaxValue:    6,
 			},
+			{
+				Type:        discordgo.ApplicationCommandOptionString,
+				Name:        OptionComment,
+				Description: "A comment.  (<99 characters)",
+				Required:    false,
+				MaxLength:   99,
+			},
 		},
 	}
 }
 
 func NewDamageCommandHandler(optionMap map[string]*discordgo.ApplicationCommandInteractionDataOption) (message string, addl log.AddlInfo) {
 
+	comment := optionMap[OptionComment].StringValue()
+	if len(comment) > 0 {
+		comment = " ## " + comment
+	}
 	pool := int(optionMap[OptionPool].IntValue())
 	cap := 6
 	if val, ok := optionMap[OptionCap]; ok {
@@ -62,5 +73,5 @@ func NewDamageCommandHandler(optionMap map[string]*discordgo.ApplicationCommandI
 		ResultRolls: rolls,
 	}
 
-	return fmt.Sprintf("Damage: **%d** Cap: %d [%s]", total, cap, strings.Join(formattedRolls, ",")), addl
+	return fmt.Sprintf("Damage: **%d** Cap: %d [%s]%s", total, cap, strings.Join(formattedRolls, ","), comment), addl
 }

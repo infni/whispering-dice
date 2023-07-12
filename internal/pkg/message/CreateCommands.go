@@ -13,9 +13,10 @@ var integerOptionValueOne = 1.0
 var integerOptionNegative99 = -99.0
 
 const (
-	OptionPool  string = "pool"
-	OptionSkill string = "skill"
-	OptionCap   string = "cap"
+	OptionPool    string = "pool"
+	OptionSkill   string = "skill"
+	OptionCap     string = "cap"
+	OptionComment string = "comment"
 
 	ResultSelectedSide string = "selectedside"
 	ResultRolls        string = "rolls"

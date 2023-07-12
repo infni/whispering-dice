@@ -1,0 +1,40 @@
+{
+    "containerDefinitions": [
+        {
+            "name": "main",
+            "image": "171055152598.dkr.ecr.us-east-1.amazonaws.com/whisperingdice:e36de909",
+            "cpu": 0,
+            "portMappings": [],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/Whispering-Dice",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "exit 0"
+                ],
+                "interval": 30,
+                "timeout": 5,
+                "retries": 3
+            }
+        }
+    ],
+    "family": "Whispering-Dice",
+    "taskRoleArn": "arn:aws:iam::171055152598:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::171055152598:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "volumes": [],
+    "placementConstraints": [],
+    "memory": "512",
+    "cpu": "256"
+}

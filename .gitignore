@@ -21,8 +21,6 @@
 go.work
 
 # specific build helper scripts
-build.sh
-run-local.sh
-push.sh
+local.sh
 .vscode/
 bin/

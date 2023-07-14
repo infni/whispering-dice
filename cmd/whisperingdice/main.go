@@ -84,6 +84,7 @@ func execute(cfg *Config) bool {
 	// Cleanly close down the Discord session.
 	defer dg.Close()
 
+	// handle the commands
 	dg.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if h, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {
 			h(s, i)

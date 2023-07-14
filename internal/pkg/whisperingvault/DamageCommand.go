@@ -1,4 +1,4 @@
-package message
+package whisperingvault
 
 import (
 	"fmt"
@@ -41,7 +41,7 @@ func NewDamageCommand() *discordgo.ApplicationCommand {
 	}
 }
 
-func NewDamageCommandHandler(optionMap map[string]*discordgo.ApplicationCommandInteractionDataOption) (message string, addl log.AddlInfo) {
+func DamageCommandHandler(optionMap map[string]*discordgo.ApplicationCommandInteractionDataOption) (message string, addl log.AddlInfo) {
 
 	pool := int(optionMap[OptionPool].IntValue())
 	comment := ""
@@ -54,7 +54,7 @@ func NewDamageCommandHandler(optionMap map[string]*discordgo.ApplicationCommandI
 	}
 
 	// roll dice
-	rolls, total := rolling.RollDamageAllRolls(pool, cap)
+	rolls, total := rolling.RollDamage(pool, cap)
 
 	// format rolls
 	formattedRolls := make([]string, len(rolls))

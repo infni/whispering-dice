@@ -1,4 +1,4 @@
-package message
+package whisperingvault
 
 import (
 	"fmt"
@@ -41,7 +41,7 @@ func NewChallengeCommand() *discordgo.ApplicationCommand {
 	}
 }
 
-func NewChallengeCommandHandler(optionMap map[string]*discordgo.ApplicationCommandInteractionDataOption) (message string, addl log.AddlInfo) {
+func ChallengeCommandHandler(optionMap map[string]*discordgo.ApplicationCommandInteractionDataOption) (message string, addl log.AddlInfo) {
 
 	comment := ""
 	if s, ok := optionMap[OptionComment]; ok {

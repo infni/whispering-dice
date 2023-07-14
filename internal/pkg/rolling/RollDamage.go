@@ -1,6 +1,6 @@
 package rolling
 
-func RollDamageAllRolls(diceCount int, dieCap int) (rolls []int, total int) {
+func RollDamage(diceCount int, dieCap int) (rolls []int, total int) {
 
 	rolls = make([]int, diceCount)
 	total = 0

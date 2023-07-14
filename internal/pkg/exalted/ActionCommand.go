@@ -10,9 +10,9 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func NewChallengeCommand() *discordgo.ApplicationCommand {
+func NewActionCommand() *discordgo.ApplicationCommand {
 	return &discordgo.ApplicationCommand{
-		Name:        "challenge",
+		Name:        "action",
 		Description: "make a challenge roll (attack, defend, evoke, skill, etc.)",
 		Options: []*discordgo.ApplicationCommandOption{
 			{

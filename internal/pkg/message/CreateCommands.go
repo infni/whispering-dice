@@ -40,6 +40,6 @@ func CreateCommands(logger log.Logger) map[*discordgo.ApplicationCommand]func(s 
 	return map[*discordgo.ApplicationCommand]func(s *discordgo.Session, i *discordgo.InteractionCreate){
 		whisperingvault.NewChallengeCommand(): makeHandlerFunction(whisperingvault.ChallengeCommandHandler),
 		whisperingvault.NewDamageCommand():    makeHandlerFunction(whisperingvault.DamageCommandHandler),
-		exalted.NewChallengeCommand():         makeHandlerFunction(exalted.ActionCommandHandler),
+		exalted.NewActionCommand():            makeHandlerFunction(exalted.ActionCommandHandler),
 	}
 }
